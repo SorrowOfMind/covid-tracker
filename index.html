@@ -7,11 +7,57 @@
         <title>Covid Tracker</title>
     </head>
     <body>
-        <header class="header container">
-            <div class="logo-container">
-                <img src="./assets/virus100.png" alt="covid logo" class="logo-img">
-                <p class="logo-text">covid<span class="logo-text-part">Tracker</span></p>
+        <header class="header">
+            <div class="logo-container container">
+                <div class="search-box">
+                    <input
+                        type="text"
+                        placeholder="change country..."
+                        class="search-bar"
+                        id="search-bar">
+                    <div class="country-lists">
+                        <p class="country-list_close" id="close-list">X</p>
+                        <div class="lists-wrapper">
+                            <ul class="country-list-1">a</ul>
+                            <ul class="country-list-2">s</ul>
+                            <ul class="country-list-3">a</ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo-box">
+                    <img src="./assets/virus100.png" alt="covid logo" class="logo-img">
+                    <p class="logo-text">covid<span class="logo-text-part">Tracker</span>
+                    </p>
+                </div>
             </div>
         </header>
+        <main class="main">
+            <section class="stats container">
+                <div class="country-stats">
+                    <div class="country">
+                        <p class="countr-name">Poland</p>
+                        <!-- <p class="country-change">Change</p> -->
+                    </div>
+                    <div class="stat">
+                        <p class="title title__total">Total Cases</p>
+                        <p class="number number__total">0</p>
+                        <p class="change">0</p>
+                    </div>
+                    <div class="stat">
+                        <p class="title title__deaths">Deaths</p>
+                        <p class="number number__deaths">0</p>
+                        <p class="change">0</p>
+                    </div>
+                    <div class="stat">
+                        <p class="title title__recovered">Recovered</p>
+                        <p class="number number__recovered">0</p>
+                        <p class="change">0</p>
+                    </div>
+                </div>
+            </section>
+            <section class="chart">
+                <canvas id="covid-chart"></canvas>
+            </section>
+        </main>
     </body>
 </html>
