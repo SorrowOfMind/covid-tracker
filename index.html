@@ -15,12 +15,24 @@
                         placeholder="change country..."
                         class="search-bar"
                         id="search-bar">
-                    <div class="country-lists">
+                    <div class="country-lists hidden">
                         <p class="country-list_close" id="close-list">X</p>
                         <div class="lists-wrapper">
-                            <ul class="country-list-1">a</ul>
-                            <ul class="country-list-2">s</ul>
-                            <ul class="country-list-3">a</ul>
+                            <ul class="country-list-1">
+                                <li>a</li>
+                                <li>b</li>
+                                <li>c</li>
+                            </ul>
+                            <ul class="country-list-2">
+                                <li>a</li>
+                                <li>b</li>
+                                <li>c</li>
+                            </ul>
+                            <ul class="country-list-3">
+                                <li>a</li>
+                                <li>b</li>
+                                <li>c</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -40,18 +52,15 @@
                     </div>
                     <div class="stat">
                         <p class="title title__total">Total Cases</p>
-                        <p class="number number__total">0</p>
-                        <p class="change">0</p>
+                        <p class="number number__total">0 <span class="change">(+0)</span></p>
                     </div>
                     <div class="stat">
                         <p class="title title__deaths">Deaths</p>
-                        <p class="number number__deaths">0</p>
-                        <p class="change">0</p>
+                        <p class="number number__deaths">0 <span class="change">(+0)</span></p>
                     </div>
                     <div class="stat">
                         <p class="title title__recovered">Recovered</p>
-                        <p class="number number__recovered">0</p>
-                        <p class="change">0</p>
+                        <p class="number number__recovered">0 <span class="change">(+0)</span></p>
                     </div>
                 </div>
             </section>
@@ -59,5 +68,10 @@
                 <canvas id="covid-chart"></canvas>
             </section>
         </main>
+        <footer class="footer">
+            <div class="copyrights container">
+                <p>Copyright &copy; 2020 nobody</p>
+            </div>
+        </footer>
     </body>
 </html>
