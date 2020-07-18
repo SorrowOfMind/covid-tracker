@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./styles/main.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src='./scripts/app.js' defer></script>
         <title>Covid Tracker</title>
     </head>
     <body>
@@ -15,12 +17,12 @@
                         placeholder="change country..."
                         class="search-bar"
                         id="search-bar">
-                    <div class="country-lists">
+                    <div class="country-lists hidden" id="list">
                         <p class="country-list_close" id="close-list">X</p>
                         <div class="lists-wrapper">
-                            <ul class="country-list-1">a</ul>
-                            <ul class="country-list-2">s</ul>
-                            <ul class="country-list-3">a</ul>
+                            <ul class="country-list country-list-1"></ul>
+                            <ul class="country-list country-list-2"></ul>
+                            <ul class="country-list country-list-3"></ul>
                         </div>
                     </div>
                 </div>
@@ -40,18 +42,15 @@
                     </div>
                     <div class="stat">
                         <p class="title title__total">Total Cases</p>
-                        <p class="number number__total">0</p>
-                        <p class="change">0</p>
+                        <p class="number number__total">0 <span class="change">(+0)</span></p>
                     </div>
                     <div class="stat">
                         <p class="title title__deaths">Deaths</p>
-                        <p class="number number__deaths">0</p>
-                        <p class="change">0</p>
+                        <p class="number number__deaths">0 <span class="change">(+0)</span></p>
                     </div>
                     <div class="stat">
                         <p class="title title__recovered">Recovered</p>
-                        <p class="number number__recovered">0</p>
-                        <p class="change">0</p>
+                        <p class="number number__recovered">0 <span class="change">(+0)</span></p>
                     </div>
                 </div>
             </section>
@@ -59,5 +58,10 @@
                 <canvas id="covid-chart"></canvas>
             </section>
         </main>
+        <footer class="footer">
+            <div class="copyrights container">
+                <p>Copyright &copy; 2020 nobody</p>
+            </div>
+        </footer>
     </body>
 </html>

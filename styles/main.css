@@ -17,6 +17,7 @@
 body,
 html {
     min-height: 100%;
+    height: max-content;
     font-size: 10px;
     scroll-behavior: smooth;
     vertical-align: baseline;
@@ -45,6 +46,10 @@ img {
 .container {
     max-width: 1362px;
     margin: 0 auto;
+}
+
+.hidden {
+    display: none;
 }
 
 .header {
@@ -76,7 +81,7 @@ img {
     left: 0;
     color: #fff;
     background-color: var(--color-list-bg);
-    overflow: scroll;
+    border: 1px solid red;
 }
 
 .country-list_close {
@@ -89,12 +94,31 @@ img {
 .lists-wrapper {
     clear: right;
     display: flex;
-    justify-content: space-between;
-    padding-top: 1rem;
+    justify-content: space-around;
+    margin-top: 4rem;
+    overflow-y: scroll;
+}
+
+.lists-wrapper::-webkit-scrollbar {
+    width: 1rem;
+    background-color: #fff;
+}
+
+.lists-wrapper::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.lists-wrapper::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+.lists-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #fff;
 }
 
 [class^="country-list-"] {
     font-size: 1.6rem;
+    list-style-type: none;
 }
 
 .logo-box {
@@ -104,7 +128,7 @@ img {
 }
 
 .logo-img {
-    width: calc(50px + (60 * ((100vw - 360px)/(1600 - 360))));
+    width: calc(40px + (25 * ((100vw - 360px)/(1600 - 360))));
 }
 
 .logo-text {
@@ -158,13 +182,35 @@ img {
     font-weight: bold;
 }
 
+.change {
+    display: block;
+    font-weight: 300;
+    font-size: calc(12px + (8 * ((100vw - 360px)/(1600 - 360))));
+}
+
 .chart {
     width: 95%;
-    height: 75vh;
+    height: 90vh;
     min-height: 500px;
     margin: 0 auto;
-    border: 1px solid red;
-    padding: 5% 0;;
+    padding: 5% 0;
+}
+
+.footer {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3vh;
+
+}
+
+.copyrights {
+    text-align: center;
+    font-size: calc(10px + (4 * ((100vw - 360px)/(1600 - 360))));
+    /* padding: .5rem 0; */
+    background-color: var(--nav-bg);
+
 }
 
 /* =========================== */
