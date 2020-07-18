@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./styles/main.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src='./scripts/app.js' defer></script>
         <title>Covid Tracker</title>
     </head>
     <body>
@@ -15,24 +17,12 @@
                         placeholder="change country..."
                         class="search-bar"
                         id="search-bar">
-                    <div class="country-lists hidden">
+                    <div class="country-lists hidden" id="list">
                         <p class="country-list_close" id="close-list">X</p>
                         <div class="lists-wrapper">
-                            <ul class="country-list-1">
-                                <li>a</li>
-                                <li>b</li>
-                                <li>c</li>
-                            </ul>
-                            <ul class="country-list-2">
-                                <li>a</li>
-                                <li>b</li>
-                                <li>c</li>
-                            </ul>
-                            <ul class="country-list-3">
-                                <li>a</li>
-                                <li>b</li>
-                                <li>c</li>
-                            </ul>
+                            <ul class="country-list country-list-1"></ul>
+                            <ul class="country-list country-list-2"></ul>
+                            <ul class="country-list country-list-3"></ul>
                         </div>
                     </div>
                 </div>
