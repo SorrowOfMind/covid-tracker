@@ -81,7 +81,6 @@ img {
     left: 0;
     color: #fff;
     background-color: var(--color-list-bg);
-    border: 1px solid red;
 }
 
 .country-list_close {
@@ -91,11 +90,17 @@ img {
     float: right;
 }
 
+.country-list {
+    list-style-type: none;
+    font-size: calc(12px + (2 * ((100vw - 360px)/(1600 - 360))));
+}
+
 .lists-wrapper {
     clear: right;
     display: flex;
     justify-content: space-around;
-    margin-top: 4rem;
+    margin-top: 3rem;
+    max-height: 300px;
     overflow-y: scroll;
 }
 
@@ -116,9 +121,9 @@ img {
     background-color: #fff;
 }
 
-[class^="country-list-"] {
-    font-size: 1.6rem;
-    list-style-type: none;
+.list-item {
+    padding: .3rem 0;
+    cursor: pointer;
 }
 
 .logo-box {
