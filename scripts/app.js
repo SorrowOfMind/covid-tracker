@@ -5,9 +5,12 @@ const apiCountries = "https://restcountries.eu/rest/v2/";
 const search = document.getElementById('search-bar');
 const lists = [...document.getElementsByClassName('country-list')];
 const x = document.getElementById('close-list');
+const listWrapper = document.getElementById('list');
+const countryName = document.getElementById('country-name');
 
 //global vars
 let countries = [];
+let query = '';
 
 window.addEventListener('load', () => {
     fetchCountries(apiCountries)
@@ -16,7 +19,7 @@ window.addEventListener('load', () => {
 const fetchCountries = url => {
     let countriesArr = [];
     axios.get(url)
-        .then(res => countries = res.data.reduce((acc, country) => acc.concat({country: country.name, code: country.alpha2Code}), []))
+        .then(res => countries = res.data.reduce((acc, country) => acc.concat({name: country.name, code: country.alpha2Code}), []))
         .then(() => populateCountriesList(countries))
         .catch(err => console.log(err));
 }
@@ -24,27 +27,64 @@ const fetchCountries = url => {
 const populateCountriesList = countriesArr => {
     console.log(countriesArr);
     countriesArr.forEach((country, idx) => {
-        let item = `<li>${country.country}</li>`
+        let item = `<li class="list-item" id=${country.name}>${country.name}</li>`
         const countriesPerList = Math.ceil(countriesArr.length/3);
-        let i = 0;
-        while (i < 3) {
-            if (i % countriesPerList === 0) {
-                lists[i].insertAdjacentHTML('beforeend', item);
+        let listIdx = Math.floor(idx/countriesPerList);
+        lists[listIdx].insertAdjacentHTML('beforeend', item);
+    });
+    for (let list of lists) {
+        list.addEventListener('click', e => {
+            if (e.target && e.target.classList.contains('list-item')) {
+                query = e.target.textContent;
+                countryName.textContent = query;
+                listWrapper.classList.add('slide-up');
+                search.value = '';
+                listWrapper.addEventListener('animationend', () => resetList(lists))
             }
-            i++;
-        }
+        })
+    }
+}
+    
+//show/hide, filter counrty list
+const resetList = arr => {
+        arr.forEach(list => {
+        [...list.children].map(country => {
+            country.classList.remove('hidden');
+        })
     })
 }
 
+const filterList = (arr, qry) => {
+        arr.forEach(list => {
+        [...list.children].map(country => {
+            if (country.textContent.toLowerCase().indexOf(qry.toLowerCase()) === -1) country.classList.add('hidden');
+            else country.classList.remove('hidden');
+        })
+    })
+}
+
+// const makeList = (arr, ctr, i) => {
+//         let item = `<li class="list-item">${ctr.name}</li>`
+//         const countriesPerList = Math.ceil(arr.length/3);
+//         let listIdx = Math.floor(i/countriesPerList);
+//         lists[listIdx].insertAdjacentHTML('beforeend', item);
+// }
+
+
 //show list on focus
 search.addEventListener('focus', () => {
-    list.classList.remove('hidden');
+    listWrapper.classList.remove('slide-up');
+    listWrapper.classList.add('slide-down');
 });
 
-search.addEventListener('blur', () => {
-    list.classList.add('hidden');
-});
-
-search.addEventListener('input', e => {
-    console.log(e.target.value)
+//close by x
+x.addEventListener('click', () => {
+    listWrapper.classList.remove('slide-down');
+    listWrapper.classList.add('slide-up');
 })
+
+//filter list on input
+search.addEventListener('input', e => {
+    const {value} = e.target;
+    filterList(lists, value);
+});
