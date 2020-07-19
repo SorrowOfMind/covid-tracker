@@ -75,19 +75,36 @@ img {
 
 .country-lists {
     position: absolute;
-    padding: 2rem;
+    /* padding: 2rem; */
     width: 100%;
     top: 100%;
     left: 0;
     color: #fff;
     background-color: var(--color-list-bg);
+    height: 0;
+    overflow: hidden;
+}
+
+.slide-down {
+    animation: slide-down 0.6s linear forwards;
+}
+
+.slide-up {
+    animation: slide-up 0.6s linear forwards;
 }
 
 .country-list_close {
     font-size: 1.6rem;
     font-weight: bold;
     cursor: pointer;
-    float: right;
+    position: absolute;
+    top: 0.7rem;
+    right: 0.5rem;
+    transition: transform .2s;
+}
+
+.country-list_close:hover {
+    transform: scale(1.3);
 }
 
 .country-list {
@@ -99,9 +116,10 @@ img {
     clear: right;
     display: flex;
     justify-content: space-around;
-    margin-top: 3rem;
-    max-height: 300px;
+    margin-top: 4rem;
+    max-height: 400px;
     overflow-y: scroll;
+    padding-bottom: 2rem;
 }
 
 .lists-wrapper::-webkit-scrollbar {
@@ -213,9 +231,18 @@ img {
 .copyrights {
     text-align: center;
     font-size: calc(10px + (4 * ((100vw - 360px)/(1600 - 360))));
-    /* padding: .5rem 0; */
     background-color: var(--nav-bg);
 
+}
+
+@keyframes slide-down {
+    0% {height: 0;}
+    100% {height: 500px;}
+}
+
+@keyframes slide-up {
+    0% {height: 500px;}
+    100% {height: 0;}
 }
 
 /* =========================== */
