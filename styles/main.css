@@ -75,7 +75,6 @@ img {
 
 .country-lists {
     position: absolute;
-    /* padding: 2rem; */
     width: 100%;
     top: 100%;
     left: 0;
@@ -140,8 +139,14 @@ img {
 }
 
 .list-item {
-    padding: .3rem 0;
+    padding: .3rem;
     cursor: pointer;
+    transform: background .2s;
+}
+
+.list-item:hover {
+    background-color: #888;
+    color: var(--color-list-bg);
 }
 
 .logo-box {

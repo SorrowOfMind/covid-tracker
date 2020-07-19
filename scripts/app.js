@@ -39,10 +39,28 @@ const populateCountriesList = countriesArr => {
                 countryName.textContent = query;
                 listWrapper.classList.add('slide-up');
                 search.value = '';
-                console.log(query);
+                listWrapper.addEventListener('animationend', () => resetList(lists))
             }
         })
     }
+}
+    
+//show/hide, filter counrty list
+const resetList = arr => {
+        arr.forEach(list => {
+        [...list.children].map(country => {
+            country.classList.remove('hidden');
+        })
+    })
+}
+
+const filterList = (arr, qry) => {
+        arr.forEach(list => {
+        [...list.children].map(country => {
+            if (country.textContent.toLowerCase().indexOf(qry.toLowerCase()) === -1) country.classList.add('hidden');
+            else country.classList.remove('hidden');
+        })
+    })
 }
 
 // const makeList = (arr, ctr, i) => {
@@ -68,10 +86,5 @@ x.addEventListener('click', () => {
 //filter list on input
 search.addEventListener('input', e => {
     const {value} = e.target;
-    lists.forEach(list => {
-        [...list.children].map(country => {
-            if (country.textContent.toLowerCase().indexOf(value.toLowerCase()) === -1) country.classList.add('hidden');
-            else country.classList.remove('hidden');
-        })
-    })
+    filterList(lists, value);
 });
