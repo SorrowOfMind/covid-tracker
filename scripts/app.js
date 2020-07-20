@@ -11,21 +11,32 @@ const countryName = document.getElementById('country-name');
 //global vars
 let countries = [];
 let query = '';
+let currentCountry = '';
 
+//fetch countries list - name + code
 window.addEventListener('load', () => {
-    fetchCountries(apiCountries)
+    fetchCountries(apiCountries);
 });
 
 const fetchCountries = url => {
-    let countriesArr = [];
     axios.get(url)
         .then(res => countries = res.data.reduce((acc, country) => acc.concat({name: country.name, code: country.alpha2Code}), []))
+        .then(() => setUserCountry())
         .then(() => populateCountriesList(countries))
         .catch(err => console.log(err));
 }
 
+//find users country code
+const setUserCountry = () => {
+    let countryCode = geoplugin_countryCode();
+    const userCountry = countries.find(country => country.code === countryCode);
+    countryName.textContent = userCountry.name;
+    currentCountry = userCountry.name;
+    fetchCovidData(currentCountry);
+}
+
+//populate list with countries
 const populateCountriesList = countriesArr => {
-    console.log(countriesArr);
     countriesArr.forEach((country, idx) => {
         let item = `<li class="list-item" id=${country.name}>${country.name}</li>`
         const countriesPerList = Math.ceil(countriesArr.length/3);
@@ -37,6 +48,7 @@ const populateCountriesList = countriesArr => {
             if (e.target && e.target.classList.contains('list-item')) {
                 query = e.target.textContent;
                 countryName.textContent = query;
+                currentCountry = query;
                 listWrapper.classList.add('slide-up');
                 search.value = '';
                 listWrapper.addEventListener('animationend', () => resetList(lists))
@@ -44,7 +56,7 @@ const populateCountriesList = countriesArr => {
         })
     }
 }
-    
+
 //show/hide, filter counrty list
 const resetList = arr => {
         arr.forEach(list => {
@@ -62,14 +74,6 @@ const filterList = (arr, qry) => {
         })
     })
 }
-
-// const makeList = (arr, ctr, i) => {
-//         let item = `<li class="list-item">${ctr.name}</li>`
-//         const countriesPerList = Math.ceil(arr.length/3);
-//         let listIdx = Math.floor(i/countriesPerList);
-//         lists[listIdx].insertAdjacentHTML('beforeend', item);
-// }
-
 
 //show list on focus
 search.addEventListener('focus', () => {
