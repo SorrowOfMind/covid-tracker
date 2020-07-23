@@ -21,32 +21,31 @@ let countryData = {
     _deaths: 0,
     get deaths () {return this._deaths;},
     set deaths (arr) {
-        let deathsArr = arr.reduce((acc, val) => acc.concat(val.total_deaths), []);
+        let deathsArr = arr.reduce((acc, val) => acc.concat(val.deaths), []);
         this._deaths = deathsArr;
     },
 
     _recovered: 0,
     get recovered () {return this._recovered;},
     set recovered (arr) {
-        let recoveredArr = arr.reduce((acc, val) => acc.concat(val.total_recovered), []);
+        let recoveredArr = arr.reduce((acc, val) => acc.concat(val.recovered), []);
         this._recovered = recoveredArr;
     },
 
     _total:  0,
     get total () {return this._total;},
     set total(arr) {
-        let totalArr = arr.reduce((acc, val) => acc.concat(val.total_cases), []);
+        let totalArr = arr.reduce((acc, val) => acc.concat(val.total), []);
         this._total = totalArr;
     },
 
     _dates: [],
     get dates () {return this._dates;},
     set dates (arr) {
-        let datesArr = arr.reduce((acc, val) => acc.concat(val.date.slice(0,10)), []);
+        let datesArr = arr.reduce((acc, val) => acc.concat(val.date), []);
         this._dates = datesArr;
     }
 };
-
 
 //fetch countries list - name + code
 window.addEventListener('load', () => {
@@ -61,23 +60,26 @@ const fetchCountries = url => {
         .catch(err => console.log(err));
 }
 
-const fetchCovidData = country => {
-    const url = `https://coronavirus-info.p.rapidapi.com/historybycountry?name=${country}`;
-    fetch(url , {
-	"method": "GET",
-	"headers": {
-		"x-rapidapi-host": "coronavirus-info.p.rapidapi.com",
-		"x-rapidapi-key": apiKey
-	}
-})
-    .then(response => response.json())
-    .then(data => {
-        countryData.dates = data.history;
-        countryData.total = data.history;
-        countryData.deaths = data.history;
-        countryData.recovered = data.history;
-    })
-    .catch(err => console.log(err));
+//fecth coutry data
+const fetchCovidData = async code => {
+    const url = `https://api.thevirustracker.com/free-api?countryTimeline=${code}`;
+    try {
+        const res = await axios.get(url);
+        const unorderedStats = Object.entries(res.data.timelineitems[0]);
+        const orderedStats = unorderedStats.reduce((acc, data) => acc.concat({
+            date: data[0], 
+            deaths: data[1].total_deaths,
+            total: data[1].total_cases,
+            recovered: data[1].total_recoveries,
+        }), []);
+        countryData.dates = orderedStats;
+        countryData.deaths = orderedStats;
+        countryData.total = orderedStats;
+        countryData.recovered = orderedStats;
+        console.log(countryData);
+    } catch (err) {
+        console.log('error:', err.message)
+    }
 }
 
 //find users country code
@@ -86,7 +88,7 @@ const setUserCountry = () => {
     const userCountry = countries.find(country => country.code === countryCode);
     countryName.textContent = userCountry.name;
     countryData.country = userCountry.name;
-    fetchCovidData(countryData.country);
+    fetchCovidData(countryCode);
 }
 
 //populate list with countries
@@ -103,10 +105,11 @@ const populateCountriesList = countriesArr => {
                 query = e.target.textContent;
                 countryName.textContent = query;
                 countryData.country = query;
+                const alphaCode = countries.find(country => country.name === query);
                 listWrapper.classList.add('slide-up');
                 search.value = '';
                 listWrapper.addEventListener('animationend', () => resetList(lists));
-                fetchCovidData(countryData.country);
+                fetchCovidData(alphaCode.code);
             }
         })
     }
