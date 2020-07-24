@@ -77,9 +77,37 @@ const fetchCovidData = async code => {
         countryData.total = orderedStats;
         countryData.recovered = orderedStats;
         console.log(countryData);
+        console.log(orderedStats)
+        sumUpCases(countryData);
     } catch (err) {
         console.log('error:', err.message)
     }
+}
+
+const sumUpCases = ({total, deaths, recovered}) => {
+    const numTotal = document.getElementById('num-total');
+    const chngTotal = document.getElementById('chng-total');
+    const numDeaths = document.getElementById('num-deaths');
+    const chngDeaths = document.getElementById('chng-deaths');
+    const numRecovered = document.getElementById('num-recovered');
+
+    const totalCases = total[total.length - 2];
+    numTotal.textContent = totalCases;
+    const totalChange = totalCases - total[total.length - 3];
+    chngTotal.textContent = `(${sign(totalChange)}${totalChange})`;
+
+    const totalDeaths = deaths[deaths.length - 2];
+    numDeaths.textContent = totalDeaths;
+    const changeDeaths = totalDeaths - deaths[deaths.length - 3];
+    chngDeaths.textContent = `(${sign(changeDeaths)}${changeDeaths})`;
+
+    const totalRecovered = recovered[recovered.length - 2];
+    numRecovered.textContent = totalRecovered;
+}
+
+const sign = (num) => {
+    if (isNaN(num)) return null;
+    return num > 0 ? '+' : num === 0 ? '' : '-';
 }
 
 //find users country code
