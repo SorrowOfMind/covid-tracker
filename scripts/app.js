@@ -7,10 +7,13 @@ const lists = [...document.getElementsByClassName('country-list')];
 const x = document.getElementById('close-list');
 const listWrapper = document.getElementById('list');
 const countryName = document.getElementById('country-name');
+const covidChart = document.getElementById('covid-chart');
+const ctx = covidChart.getContext('2d');
 
 //global vars
 let countries = [];
 let query = '';
+Chart.defaults.global.defaultFontColor = '#FFF';
 
 //country object
 let countryData = {
@@ -77,8 +80,8 @@ const fetchCovidData = async code => {
         countryData.total = orderedStats;
         countryData.recovered = orderedStats;
         console.log(countryData);
-        console.log(orderedStats)
         sumUpCases(countryData);
+        updateChart();
     } catch (err) {
         console.log('error:', err.message)
     }
@@ -178,3 +181,35 @@ search.addEventListener('input', e => {
     const {value} = e.target;
     filterList(lists, value);
 });
+
+//Chart
+const updateChart = () => {
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: countryData.dates,
+            datasets: [{
+                label: 'Cases',
+                data: countryData.total,
+                borderColor: '#00cafd',
+                fill: false,
+                borderWidth: 1,
+                hoverBorderWidth: 3,
+                hoverBorderColor: '#FFF'
+            },
+            {
+                label: 'Deaths',
+                data: countryData.deaths,
+                borderColor: '#e2241c',
+                fill: false,
+                borderWidth: 1,
+                hoverBorderWidth: 3,
+                hoverBorderColor: '#FFF'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    })
+}
