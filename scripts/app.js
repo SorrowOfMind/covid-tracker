@@ -1,6 +1,3 @@
-//apis
-const apiCountries = "https://restcountries.eu/rest/v2/";
-
 //select elements
 const search = document.getElementById('search-bar');
 const lists = [...document.getElementsByClassName('country-list')];
@@ -60,6 +57,7 @@ let countryData = {
 
 //fetch countries list - name + code
 window.addEventListener('load', () => {
+    const apiCountries = "https://restcountries.eu/rest/v2/";
     fetchCountries(apiCountries);
 });
 
