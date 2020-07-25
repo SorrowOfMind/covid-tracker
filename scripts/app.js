@@ -7,12 +7,19 @@ const lists = [...document.getElementsByClassName('country-list')];
 const x = document.getElementById('close-list');
 const listWrapper = document.getElementById('list');
 const countryName = document.getElementById('country-name');
+const noData = document.getElementById('no-data');
+const numTotal = document.getElementById('num-total');
+const chngTotal = document.getElementById('chng-total');
+const numDeaths = document.getElementById('num-deaths');
+const chngDeaths = document.getElementById('chng-deaths');
+const numRecovered = document.getElementById('num-recovered');
 const covidChart = document.getElementById('covid-chart');
 const ctx = covidChart.getContext('2d');
 
 //global vars
 let countries = [];
 let query = '';
+let chart;
 Chart.defaults.global.defaultFontColor = '#FFF';
 
 //country object
@@ -21,23 +28,24 @@ let countryData = {
     get country () {return this._country;},
     set country (ctry) {this._country = ctry;},
 
-    _deaths: 0,
+    _deaths: [],
     get deaths () {return this._deaths;},
     set deaths (arr) {
         let deathsArr = arr.reduce((acc, val) => acc.concat(val.deaths), []);
         this._deaths = deathsArr;
     },
 
-    _recovered: 0,
+    _recovered: [],
     get recovered () {return this._recovered;},
     set recovered (arr) {
         let recoveredArr = arr.reduce((acc, val) => acc.concat(val.recovered), []);
         this._recovered = recoveredArr;
     },
 
-    _total:  0,
+    _total:  [],
     get total () {return this._total;},
     set total(arr) {
+        if (arr.length === 0) this._total = [];
         let totalArr = arr.reduce((acc, val) => acc.concat(val.total), []);
         this._total = totalArr;
     },
@@ -65,9 +73,12 @@ const fetchCountries = url => {
 
 //fecth coutry data
 const fetchCovidData = async code => {
+    countryData.dates = [], countryData.total = [], countryData.deaths = [], countryData.recovered = [];
+    noData.classList.add('hidden');
     const url = `https://api.thevirustracker.com/free-api?countryTimeline=${code}`;
     try {
         const res = await axios.get(url);
+        if (!res.data.timelineitems) return showNoDataMsg(countryData.country);
         const unorderedStats = Object.entries(res.data.timelineitems[0]);
         const orderedStats = unorderedStats.reduce((acc, data) => acc.concat({
             date: data[0], 
@@ -79,7 +90,6 @@ const fetchCovidData = async code => {
         countryData.deaths = orderedStats;
         countryData.total = orderedStats;
         countryData.recovered = orderedStats;
-        console.log(countryData);
         sumUpCases(countryData);
         updateChart();
     } catch (err) {
@@ -88,12 +98,6 @@ const fetchCovidData = async code => {
 }
 
 const sumUpCases = ({total, deaths, recovered}) => {
-    const numTotal = document.getElementById('num-total');
-    const chngTotal = document.getElementById('chng-total');
-    const numDeaths = document.getElementById('num-deaths');
-    const chngDeaths = document.getElementById('chng-deaths');
-    const numRecovered = document.getElementById('num-recovered');
-
     const totalCases = total[total.length - 2];
     numTotal.textContent = totalCases;
     const totalChange = totalCases - total[total.length - 3];
@@ -106,6 +110,16 @@ const sumUpCases = ({total, deaths, recovered}) => {
 
     const totalRecovered = recovered[recovered.length - 2];
     numRecovered.textContent = totalRecovered;
+}
+
+const showNoDataMsg = () => {
+    if (chart) chart.destroy();
+    noData.classList.remove('hidden');
+    numTotal.textContent = 0;
+    chngTotal.textContent = 0;
+    numDeaths.textContent = 0;
+    chngDeaths.textContent = 0;
+    numRecovered.textContent = 0;
 }
 
 const sign = (num) => {
@@ -184,7 +198,8 @@ search.addEventListener('input', e => {
 
 //Chart
 const updateChart = () => {
-    const chart = new Chart(ctx, {
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: countryData.dates,
@@ -192,15 +207,17 @@ const updateChart = () => {
                 label: 'Cases',
                 data: countryData.total,
                 borderColor: '#00cafd',
+                backgroundColor: '#00cafd',
                 fill: false,
                 borderWidth: 1,
-                hoverBorderWidth: 3,
+                hoverBorderWidth: 2,
                 hoverBorderColor: '#FFF'
             },
             {
                 label: 'Deaths',
                 data: countryData.deaths,
                 borderColor: '#e2241c',
+                backgroundColor: '#e2241c',
                 fill: false,
                 borderWidth: 1,
                 hoverBorderWidth: 3,
